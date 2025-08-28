@@ -1,28 +1,31 @@
 const nextJest = require("next/jest");
 
 const createJestConfig = nextJest({
-  dir: "./", // Load Next.js config and env
+  dir: "./",
 });
 
 const customJestConfig = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   testEnvironment: "jsdom",
 
-  // Fix: Jest can't handle Next.js "server-only" import
   moduleNameMapper: {
-    "^server-only$": "<rootDir>/test/__mocks__/server-only.js",
+    "^server-only$": "<rootDir>/__mocks__/server-only.js",
   },
 
-  // Ignore transforms for Next.js app router files that export metadata
+  // Force Babel for everything
+  transform: {
+    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
+  },
+
   transformIgnorePatterns: [
     "/node_modules/",
-    "app/.*\\.(ts|tsx)$", // Ignore Next.js App Router special files
+    "<rootDir>/__mocks__/",
   ],
 
-  // Optional: skip running tests colocated with app router if needed
   testPathIgnorePatterns: [
     "<rootDir>/.next/",
     "<rootDir>/node_modules/",
+    "<rootDir>/__mocks__/",
   ],
 };
 
