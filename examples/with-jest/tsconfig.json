@@ -33,6 +33,6 @@
     "**/*.tsx",
     "types.d.ts",
     ".next/types/**/*.ts"
-  ],
+, "app/utils/add.test.ts.tempskip"  ],
   "exclude": ["node_modules"]
 }
