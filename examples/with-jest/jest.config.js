@@ -1,15 +1,29 @@
 const nextJest = require("next/jest");
 
 const createJestConfig = nextJest({
-  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
-  dir: "./",
+  dir: "./", // Load Next.js config and env
 });
 
-// Add any custom config to be passed to Jest
 const customJestConfig = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   testEnvironment: "jsdom",
+
+  // Fix: Jest can't handle Next.js "server-only" import
+  moduleNameMapper: {
+    "^server-only$": "<rootDir>/test/__mocks__/server-only.js",
+  },
+
+  // Ignore transforms for Next.js app router files that export metadata
+  transformIgnorePatterns: [
+    "/node_modules/",
+    "app/.*\\.(ts|tsx)$", // Ignore Next.js App Router special files
+  ],
+
+  // Optional: skip running tests colocated with app router if needed
+  testPathIgnorePatterns: [
+    "<rootDir>/.next/",
+    "<rootDir>/node_modules/",
+  ],
 };
 
-// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
 module.exports = createJestConfig(customJestConfig);
