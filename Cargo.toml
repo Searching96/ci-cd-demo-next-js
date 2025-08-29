@@ -14,7 +14,7 @@ members = [
   "turbopack/crates/*",
   "turbopack/crates/*/fuzz",
   "turbopack/xtask",
-]
+] 
 
 exclude = ["crates/next-error-code-swc-plugin"]
 
